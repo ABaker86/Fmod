@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.text.SimpleDateFormat;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -16,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
@@ -63,9 +63,16 @@ public class MainFrame extends JFrame {
 						if (file.exists())
 						{
 							try {
-						SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-						textArea.append("This is the stamp before " + file.lastModified()+"\n");
-						textArea.append("This is the stamp now readable " + sdf.format(file.lastModified())+"\n");}
+
+								//print the original last modified date
+								textArea.append("\nThis is the mod date befor format: "+file.lastModified());
+								/**Removes two days off the timestamp*/
+								long backTwoDays = file.lastModified() - 86400000;
+								file.setLastModified(backTwoDays);
+								
+						 textArea.append("\nThis is the new date: " + file.lastModified() );
+						    
+						}
 					 catch (Exception exception) {
 						textArea.append("There was an error reading getting the file.");
 					}	
@@ -103,7 +110,28 @@ public class MainFrame extends JFrame {
 	button.addActionListener(new ActionListener(){
 		@Override 
 		public void actionPerformed(ActionEvent e){
-		textArea.append("\n Hello");
+			String x = filePath.getText();
+			
+			
+			
+			File file = new File(x);
+			if (file.exists())
+			{
+				try {
+
+					//print the original last modified date
+					textArea.append("\nThis is the mod date befor format: "+file.lastModified());
+					/**Removes two days off the timestamp*/
+					long backTwoDays = file.lastModified() - 86400000;
+					file.setLastModified(backTwoDays);
+					
+			 textArea.append("\nThis is the new date: " + file.lastModified() );
+			    
+			}
+		 catch (Exception exception) {
+			textArea.append("There was an error reading getting the file.");
+		}	
+	}else{textArea.append("The file path is incorrect or does not exist!");}
 		}
 	});
 	
